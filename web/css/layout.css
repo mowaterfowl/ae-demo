@@ -1,0 +1,12 @@
+html{
+    background-color: #3ab5ee;
+    margin: 3em;
+    font-family: 'Bangers', cursive;
+}
+
+#container-main{
+    margin: 0 auto;
+    width: 720px;
+    border: 5px solid #fff;
+    padding: 15px;
+}

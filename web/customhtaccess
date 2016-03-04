@@ -1,0 +1,8 @@
+# written for IIS support via import
+# can only be used if served from the root directory ie: http://localhost/app.php
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteCond %(REQUEST_FILENAME) !-f
+	RewriteRule ^(.*)$ app.php [QSA,L]
+</IfModule>
