@@ -8,11 +8,74 @@
 
 	namespace AppBundle;
 
-	use AppBundle\Fight;
 
+	use Doctrine\ORM\Query\ResultSetMapping;
+	use Doctrine\ORM\EntityManager;
 
 	class RockPaperScissorsLizardSpock
 	{
+
+		private $entityManager;
+
+		public function __construct(EntityManager $entityManager)
+		{
+			$this->entityManager = $entityManager;
+		}
+
+		public function getPlayerStats(){
+
+			$rsm = new ResultSetMapping();
+
+			$conn = $this->entityManager->getConnection();
+			$sqlPlayerStats = $conn->prepare("SELECT COUNT(PlayerWeapon) as TimesSelected, PlayerWeapon as Weapon
+											  FROM fights
+											  GROUP BY PlayerWeapon");
+			$sqlPlayerStats->execute();
+			$playerResults = $sqlPlayerStats->fetchAll();
+
+			// flatten the results
+			foreach($playerResults as $row){
+				$playerStats[$row['Weapon']] = $row['TimesSelected'];
+			}
+
+			return $playerStats;
+		}
+		public function getAiStats(){
+
+			$rsm = new ResultSetMapping();
+
+			$conn = $this->entityManager->getConnection();
+			$sqlAiStats = $conn->prepare("SELECT COUNT(AiWeapon) as TimesSelected, AiWeapon as Weapon
+										  FROM fights
+										  GROUP BY AiWeapon");
+			$sqlAiStats->execute();
+			$aiResults = $sqlAiStats->fetchAll();
+
+			// flatten the results
+			foreach($aiResults as $row){
+				$aiStats[$row['Weapon']] = $row['TimesSelected'];
+			}
+
+			return $aiStats;
+		}
+		public function getWinLossStats(){
+
+			$rsm = new ResultSetMapping();
+
+			$conn = $this->entityManager->getConnection();
+			$sqlWLStats = $conn->prepare("SELECT Winner, COUNT(FightID) AS TotalGames
+										  FROM Fights
+										  GROUP BY Winner");
+			$sqlWLStats->execute();
+			$wlResults = $sqlWLStats->fetchAll();
+
+			// flatten the results
+			foreach($wlResults as $row){
+				$wlStats[$row['Winner']] = $row['TotalGames'];
+			}
+
+			return $wlStats;
+		}
 
 		public function fight($playerWeapon = "rock")
 		{

@@ -18,6 +18,11 @@
 		public function indexAction(Request $request)
 		{
 
+			$rpsls = new RockPaperScissorsLizardSpock($this->getDoctrine()->getManager()); // The object for controlling our game's functions
+			// get the stats
+			$wlStats     = $rpsls->getWinLossStats();
+			$playerStats = $rpsls->getPlayerStats();
+			$aiStats     = $rpsls->getAiStats();
 
 
 			// build our form, we want single click interaction thus submit buttons will be easier
@@ -33,14 +38,14 @@
 			$form->handleRequest($request);  // assign the request information to the form object
 			if ($form->isSubmitted()) {
 
-				$rpsls = new RockPaperScissorsLizardSpock(); // The object for controlling our game's functions
-				$weaponOptions = array("scissors","paper","rock", "lizard", "spock");
+
+				$weaponOptions = array("scissors", "paper", "rock", "lizard", "spock");
 
 
-				foreach ($weaponOptions as $weapon){
+				foreach ($weaponOptions as $weapon) {
 					// find out what weapon the player chose
 					// NOTE: PHPStorm tells us the isClicked() method is undefined.  It lies.
-					if($form->get($weapon)->isClicked()){
+					if ($form->get($weapon)->isClicked()) {
 						$playerWeapon = $weapon;
 					}
 
@@ -57,7 +62,10 @@
 				$em->persist($fight);
 				$em->flush();
 
-
+				// update the stats
+				$wlStats     = $rpsls->getWinLossStats();
+				$playerStats = $rpsls->getPlayerStats();
+				$aiStats     = $rpsls->getAiStats();
 
 				// output the results back to the page
 				return $this->render('default/index.html.twig', [
@@ -65,6 +73,9 @@
 					'winner'       => $fightResults['Winner'],
 					'aiWeapon'     => $fightResults['AiWeapon'],
 					'playerWeapon' => $fightResults['PlayerWeapon'],
+					'wlStats'      => $wlStats,
+					'playerStats'  => $playerStats,
+					'aiStats'      => $aiStats,
 					'ourForm'      => $form->createView()
 				]);
 
@@ -73,8 +84,13 @@
 				// the page view if the form wasn't submitted (first view)
 				return $this->render('default/index.html.twig', [
 					'base_dir' => realpath($this->getParameter('kernel.root_dir') . '/..'),
-					'ourForm'  => $form->createView()]);
+					'wlStats'      => $wlStats,
+					'playerStats'  => $playerStats,
+					'aiStats'      => $aiStats,
+					'ourForm'  => $form->createView()
+				]);
 			}
 		}
+
 
 	}

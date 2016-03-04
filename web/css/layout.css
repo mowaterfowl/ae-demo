@@ -7,14 +7,34 @@ html{
 #container-main{
     margin: 0 auto;
     width: 720px;
-    border: 5px solid #fff;
+    /* border: 5px solid #fff; */
     padding: 15px;
 }
 #form{
     margin: 0 auto;
-    border: 1px solid #333;
+
 }
 #form div {
     display: inline-table;
     padding-left: 20px;
+}
+h2{
+    color: #fff;
+}
+button{
+
+    padding: 10px;
+    border: 2px solid #404040;
+    background: #fff;
+    font-family: 'Bangers', cursive;
+    font-weight: bold;
+    font-size:2em;
+
+}
+#stats{
+    border-collapse: collapse;
+    font-size: 1.1em;
+}
+#stats th, #stats td{
+    padding: 5px;
 }
