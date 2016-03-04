@@ -6,6 +6,7 @@
 	use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 	use Symfony\Component\HttpFoundation\Request;
 	use AppBundle\RockPaperScissorsLizardSpock;
+	use AppBundle\Entity\Fight;
 	use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
@@ -45,14 +46,25 @@
 
 				}
 
-				$fight = $rpsls->fight($playerWeapon); // who is the strongest?
+				$fightResults = $rpsls->fight($playerWeapon); // who is the strongest?
+
+				// update the database with the results
+				$fight = new Fight();
+				$fight->setAIWeapon($fightResults['AiWeapon']);
+				$fight->setPlayerWeapon($fightResults['PlayerWeapon']);
+				$fight->setWinner($fightResults['Winner']);
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($fight);
+				$em->flush();
+
+
 
 				// output the results back to the page
 				return $this->render('default/index.html.twig', [
 					'base_dir'     => realpath($this->getParameter('kernel.root_dir') . '/..'),
-					'winner'       => $fight['Winner'],
-					'aiWeapon'     => $fight['AiWeapon'],
-					'playerWeapon' => $fight['PlayerWeapon'],
+					'winner'       => $fightResults['Winner'],
+					'aiWeapon'     => $fightResults['AiWeapon'],
+					'playerWeapon' => $fightResults['PlayerWeapon'],
 					'ourForm'      => $form->createView()
 				]);
 
