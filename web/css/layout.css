@@ -10,3 +10,11 @@ html{
     border: 5px solid #fff;
     padding: 15px;
 }
+#form{
+    margin: 0 auto;
+    border: 1px solid #333;
+}
+#form div {
+    display: inline-table;
+    padding-left: 20px;
+}

@@ -6,13 +6,17 @@
             <h1>Rock, Paper, Scissors, Lizard, Spock</h1>
         </div>
         <div id="container">
+            {% if winner is defined %}
             <div id="welcome">
                 <h1>winner: {{ winner }}</h1>
                 <h1>player: {{ playerWeapon }}</h1>
                 <h1>ai weapon: {{ aiWeapon }}</h1>
             </div>
+            {% endif %}
             <div id="input-form">
-
+                {{ form_start(ourForm) }}
+                {{ form_widget(ourForm) }}
+                {{ form_end(ourForm) }}
             </div>
         </div>
     </div>

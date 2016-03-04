@@ -13,7 +13,8 @@
 	{
 
 
-	public function fight($playerWeapon = "lizard"){
+
+	public function fight($playerWeapon = "rock"){
 
 		/*
 		no need to reinvent the wheel, but let's give credit where credit is
