@@ -9,6 +9,9 @@
 /var/logs/*
 !var/cache/.gitkeep
 !var/logs/.gitkeep
+/var/*
+var/*
+.idea/*
 
 # Parameters
 /app/config/parameters.yml

@@ -8,8 +8,6 @@
 
 	namespace AppBundle;
 
-
-	use Doctrine\ORM\Query\ResultSetMapping;
 	use Doctrine\ORM\EntityManager;
 
 	class RockPaperScissorsLizardSpock
@@ -17,64 +15,84 @@
 
 		private $entityManager;
 
+
 		public function __construct(EntityManager $entityManager)
 		{
 			$this->entityManager = $entityManager;
 		}
 
-		public function getPlayerStats(){
+		public function getPlayerStats()
+		{
 
-			$rsm = new ResultSetMapping();
+			// get the player's stats on weapon choice from the database
 
-			$conn = $this->entityManager->getConnection();
+			$conn           = $this->entityManager->getConnection();
 			$sqlPlayerStats = $conn->prepare("SELECT COUNT(PlayerWeapon) as TimesSelected, PlayerWeapon as Weapon
 											  FROM fights
 											  GROUP BY PlayerWeapon");
 			$sqlPlayerStats->execute();
 			$playerResults = $sqlPlayerStats->fetchAll();
 
-			// flatten the results
-			foreach($playerResults as $row){
-				$playerStats[$row['Weapon']] = $row['TimesSelected'];
+			if ($playerResults) {
+				// flatten the results
+				foreach ($playerResults as $row) {
+					$playerStats[$row['Weapon']] = $row['TimesSelected'];
+				}
+
+				if ($playerStats) {
+					return $playerStats;
+				}
 			}
-
-			return $playerStats;
 		}
-		public function getAiStats(){
 
-			$rsm = new ResultSetMapping();
+		public function getAiStats()
+		{
 
-			$conn = $this->entityManager->getConnection();
+			// get the ai's stats on weapon choice from the database
+
+			$conn       = $this->entityManager->getConnection();
 			$sqlAiStats = $conn->prepare("SELECT COUNT(AiWeapon) as TimesSelected, AiWeapon as Weapon
 										  FROM fights
 										  GROUP BY AiWeapon");
 			$sqlAiStats->execute();
 			$aiResults = $sqlAiStats->fetchAll();
 
-			// flatten the results
-			foreach($aiResults as $row){
-				$aiStats[$row['Weapon']] = $row['TimesSelected'];
+			if ($aiResults) {
+				// flatten the results
+				foreach ($aiResults as $row) {
+					$aiStats[$row['Weapon']] = $row['TimesSelected'];
+				}
+
+				if ($aiStats) {
+					return $aiStats;
+				}
 			}
 
-			return $aiStats;
 		}
-		public function getWinLossStats(){
 
-			$rsm = new ResultSetMapping();
+		public function getWinLossStats()
+		{
 
-			$conn = $this->entityManager->getConnection();
+			// get the win count for each of the players
+
+			$conn       = $this->entityManager->getConnection();
 			$sqlWLStats = $conn->prepare("SELECT Winner, COUNT(FightID) AS TotalGames
 										  FROM Fights
 										  GROUP BY Winner");
 			$sqlWLStats->execute();
 			$wlResults = $sqlWLStats->fetchAll();
 
-			// flatten the results
-			foreach($wlResults as $row){
-				$wlStats[$row['Winner']] = $row['TotalGames'];
-			}
+			if ($wlResults) {
 
-			return $wlStats;
+				// flatten the results
+				foreach ($wlResults as $row) {
+					$wlStats[$row['Winner']] = $row['TotalGames'];
+				}
+
+				if ($wlStats) {
+					return $wlStats;
+				}
+			}
 		}
 
 		public function fight($playerWeapon = "rock")
@@ -130,13 +148,12 @@
 				}
 
 				// search the losingWeapons array for the ai's weapon
-				$Winner      = (in_array($aiWeapon, $losingWeapons) ? 'PLAYER' : 'AI OPPONENT');
+				$Winner      = (in_array($aiWeapon, $losingWeapons) ? 'PLAYER' : 'AI');
 				$ReturnArray = array(
 					'Winner'       => $Winner,
 					'PlayerWeapon' => $playerWeapon,
 					'AiWeapon'     => $aiWeapon
 				);
-
 
 
 				return $ReturnArray;

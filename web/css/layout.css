@@ -1,40 +1,76 @@
 html{
     background-color: #3ab5ee;
-    margin: 3em;
+    margin: 2em;
     font-family: 'Bangers', cursive;
+    color: #ffffff;
 }
-
+#player1, #ai{
+    overflow:hidden;
+    height: 400px;
+}
 #container-main{
     margin: 0 auto;
-    width: 720px;
     /* border: 5px solid #fff; */
+    padding: 10px;
+}
+#container-players, #container-destiny{
+    margin: 0 auto;
+    width: 660px;
+}
+#results-player, #results-ai{
+    position:relative;
+    z-index: 999;
+    top: -280px;
+    left: 80px;
+}
+
+.weapon-status{
+    margin: 0 auto;
+    letter-spacing: .08em;
+}
+.weapon-status, .stats-table td{
+    text-align: center;
+}
+.stats-table{
+    font-size: 14px;
+    letter-spacing: .08em;
+}
+.player-row{
+    display:inline-table;
     padding: 15px;
+    vertical-align: middle;
+    height: 0px;
+}
+#title{
+    margin: 0 auto;
+    display: block;
 }
 #form{
     margin: 0 auto;
-
+    text-align: center;
 }
 #form div {
     display: inline-table;
     padding-left: 20px;
 }
-h2{
-    color: #fff;
-}
 button{
-
     padding: 10px;
     border: 2px solid #404040;
-    background: #fff;
     font-family: 'Bangers', cursive;
     font-weight: bold;
-    font-size:2em;
+    font-size:1.4em;
+    letter-spacing: .1em;
 
-}
-#stats{
-    border-collapse: collapse;
-    font-size: 1.1em;
-}
-#stats th, #stats td{
-    padding: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    background-color: #FFF23A; background-image: -webkit-gradient(linear, left top, left bottom, from(#FFF23A), to(#F3903F));
+    background-image: -webkit-linear-gradient(top, #FFF23A, #F3903F);
+    background-image: -moz-linear-gradient(top, #FFF23A, #F3903F);
+    background-image: -ms-linear-gradient(top, #FFF23A, #F3903F);
+    background-image: -o-linear-gradient(top, #FFF23A, #F3903F);
+    background-image: linear-gradient(to bottom, #FFF23A, #F3903F);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FFF23A, endColorstr=#F3903F);
+
+/* fff23a  to f3903f */
 }

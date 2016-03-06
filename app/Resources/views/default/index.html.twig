@@ -2,58 +2,88 @@
 
 {% block body %}
     <div id="container-main">
-        <div id="title">
-            <h1>Rock, Paper, Scissors, Lizard, Spock</h1>
+        <div>
+            <img id="title" src="{{ asset('images/title.png') }}">
         </div>
-        <div id="container">
-            {% if winner is defined %}
-                <div id="welcome">
-                    <h1>winner: {{ winner }}</h1>
-                    <h1>player: {{ playerWeapon }}</h1>
-                    <h1>ai weapon: {{ aiWeapon }}</h1>
-                </div>
-            {% endif %}
+        <div id="container-players">
+            <div id="player1" class="player-row">
+
+                {% if wlStats is defined and playerStats is defined %}
+                    <table id="stats-player" class="stats-table">
+                        <tr>
+                            <th>Wins</th>
+                            <th>Rock</th>
+                            <th>Paper</th>
+                            <th>Scissors</th>
+                            <th>Lizard</th>
+                            <th>Spock</th>
+                        </tr>
+                        <tr>
+                            <td>{{ wlStats['PLAYER']|default('') }}</td>
+                            <td>{{ playerStats['rock']|default('') }}</td>
+                            <td>{{ playerStats['paper']|default('') }}</td>
+                            <td>{{ playerStats['scissors']|default('') }}</td>
+                            <td>{{ playerStats['lizard']|default('') }}</td>
+                            <td>{{ playerStats['spock']|default('') }}</td>
+                        </tr>
+                    </table>
+                    <br/>
+                {% endif %}
+                <img id="avatar-player" src="{{ asset('images/player.jpg') }}">
+                {% if winner is defined %}
+                    <h1 class="weapon-status">{{ playerWeapon }}!</h1>
+
+                {% if winner == 'PLAYER' %}
+                    <img id="results-player" src="{{ asset('images/winner.png') }}">
+                {% elseif winner == 'DRAW' %}
+                    <img id="results-player" src="{{ asset('images/draw.png') }}">
+                {% endif %}
+                {% endif %}
+            </div>
+            <div id="vs" class="player-row"><img id="imgVs" src="{{ asset('images/vs.png') }}"></div>
+            <div id="ai" class="player-row">
+
+                {% if wlStats is defined and aiStats is defined %}
+                    <table id="statsAi" class="stats-table">
+                        <tr>
+                            <th>Wins</th>
+                            <th>Rock</th>
+                            <th>Paper</th>
+                            <th>Scissors</th>
+                            <th>Lizard</th>
+                            <th>Spock</th>
+                        </tr>
+                        <tr>
+                            <td>{{ wlStats['AI']|default('') }}</td>
+                            <td>{{ aiStats['rock']|default('') }}</td>
+                            <td>{{ aiStats['paper']|default('') }}</td>
+                            <td>{{ aiStats['scissors']|default('') }}</td>
+                            <td>{{ aiStats['lizard']|default('') }}</td>
+                            <td>{{ aiStats['spock']|default('') }}</td>
+                        </tr>
+                    </table> <br/>
+                {% endif %}
+
+                <img id="avatarAi" src="{{ asset('images/'~random(19)~'.jpg') }}">
+                {% if winner is defined %}
+                    <h1 class="weapon-status">{{ aiWeapon }}!</h1>
+
+
+                {% if winner == 'AI' %}
+                    <img id="results-ai" src="{{ asset('images/winner.png') }}">
+                {% elseif winner == 'DRAW' %}
+                    <img id="results-ai" src="{{ asset('images/draw.png') }}">
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div id="container-destiny">
             <div id="input-form">
-                <h2>Choose your destiny:</h2>
+                <h2 style="text-align: center;"><img src="{{ asset('images/destiny.png') }}"></h2>
                 {{ form_start(ourForm) }}
                 {{ form_widget(ourForm) }}
                 {{ form_end(ourForm) }}
             </div>
-        </div>
-        <br/>
-        {% if wlStats is defined and playerStats is defined and aiStats is defined %}
-        <div>
-            <h2>All Time Overall Stats</h2>
-            <table id="stats" >
-                <tr>
-                <th></th>
-                <th>Wins</th>
-                <th>Rock</th>
-                <th>Paper</th>
-                <th>Scissors</th>
-                <th>Lizard</th>
-                <th>Spock</th>
-                </tr>
-                <tr>
-                    <td>Player</td>
-                    <td>{{ wlStats['PLAYER'] }}</td>
-                    <td>{{ playerStats['rock'] }}</td>
-                    <td>{{ playerStats['paper'] }}</td>
-                    <td>{{ playerStats['scissors'] }}</td>
-                    <td>{{ playerStats['lizard'] }}</td>
-                    <td>{{ playerStats['spock'] }}</td>
-                </tr>
-                <tr>
-                    <td>AI</td>
-                    <td>{{ wlStats['AI OPPONENT'] }}</td>
-                    <td>{{ aiStats['rock'] }}</td>
-                    <td>{{ aiStats['paper'] }}</td>
-                    <td>{{ aiStats['scissors'] }}</td>
-                    <td>{{ aiStats['lizard'] }}</td>
-                    <td>{{ aiStats['spock'] }}</td>
-                </tr>
-            </table>
-            {% endif %}
         </div>
     </div>
 {% endblock %}
